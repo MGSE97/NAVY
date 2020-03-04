@@ -49,9 +49,14 @@ class Layer:
 
     def backwards(self, error, learning_rate):
         tmp = error * [self.activation_func.backwards(o) for o in self.outputs]
+        #print("tmp ", tmp.shape)
+        #print("error ", error.shape)
+        #print("weights ", self.weights.shape)
         error = self.weights.transpose() @ tmp
         tmp = learning_rate * tmp
-        self.weights -= tmp * self.inputs
+        #print("tmp ", tmp.reshape(tmp.shape[0], 1).shape)
+        #print("inputs ", np.array(self.inputs).reshape(1,self.inputs_size).shape)
+        self.weights -= tmp.reshape(tmp.shape[0], 1) * np.array(self.inputs).reshape(1,self.inputs_size)
         self.biases -= tmp
         return error
 

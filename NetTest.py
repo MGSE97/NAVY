@@ -41,18 +41,37 @@ def test_func(data):
 
 
 # prepare
+net_size = 8
 net = Net([
-    Layer(2, 2, Sigmoid),
-    Layer(2, 1, Sigmoid)
+    Layer(2, net_size, Sigmoid),
+    Layer(net_size, 1, Sigmoid)
 ])
 
-input_size = 10000
+input_size = 1000
 epochs = 1000
 draw_epoch = 5
-learning_rate = 0.1
+learning_rate = 0.2
+# ns: 16 fail       is: 1000 de: 5 lr: 0.1
+# ns: 8  e: 105     is: 1000 de: 5 lr: 1.0 unstable
+# ns: 8  e: 150     is: 1000 de: 5 lr: 0.5
+# ns: 8  e: 135-45  is: 1000 de: 5 lr: 0.2
+# ns: 8  e: 445     is: 1000 de: 5 lr: 0.1
+# ns: 8  fail       is: 1000 de: 5 lr: 0.01
+# ns: 6  fail       is: 1000 de: 5 lr: 0.5
+# ns: 6  fail       is: 1000 de: 5 lr: 0.1
+# ns: 5  fail       is: 1000 de: 5 lr: 0.5
+# ns: 5  fail       is: 1000 de: 5 lr: 0.1
+# ns: 4  fail       is: 1000 de: 5 lr: 0.5
+# ns: 4  fail       is: 1000 de: 5 lr: 0.1
+# ns: 2  fail       is: 1000 de: 5 lr: 0.5
+# ns: 2  fail       is: 1000 de: 5 lr: 0.1
+
+# ns: 16 fail       is: 10000 de: 5 lr: 0.1
+# ns: 8  e: 25      is: 10000 de: 5 lr: 0.1
+# ns: 8  e: 112     is: 10000 de: 2 lr: 0.01
 
 teach = gen_labeled(input_size)
-test = gen_labeled((int)(input_size/10))
+test = gen_labeled((int)(input_size/1))
 
 
 # view
@@ -62,26 +81,25 @@ viewTest = prepareView("XOR Test")
 points = drawPoints(viewTest, test)
 
 # learn
-for epoch in range(0, epochs):
-    losses = 0
+#for epoch in range(0, epochs):
+epoch = 0
+while(True):
     for point in teach:
         y = net.forward(point.data)
-        #loss = perceptron_simple_error(point.label, y[0])
         net.backwards([point.label], y, learning_rate)
-        #losses += loss
-    #print("Loss({}): {}".format(epoch, losses / len(teach)))
-    #print(net)
 
     if epoch % draw_epoch == 0:
         # test
-        #losses_t = 0
+        losses = 0
         for point in test:
             y = net.forward(point.data)[0]
-            #loss = perceptron_simple_error(point.label, y)
+            loss = 0.5*(point.label - y)**2
             point.label = y
-            #losses_t += loss
-        #print("Loss({}): {}".format(epoch, losses_t / len(test)))
-        print(epoch)
+            losses += loss
+        print("Loss({}): {}".format(epoch, losses))
+        #print(epoch)
         points = drawPoints(viewTest, test, points)
+        
+    epoch += 1
 
 plt.show()
