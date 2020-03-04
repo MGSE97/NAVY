@@ -15,6 +15,14 @@ class Point:
         self.label = label
         return self
 
+class Sigmoid:
+    @staticmethod
+    def forward(x):
+        return 1/(1+np.exp(-x))
+
+    @staticmethod
+    def backwards(x):
+        return x*(1-x)
 
 def rand_point_arr(size, min_val=-100, max_val=100):
     return [Point().rand(min_val, max_val) for x in range(0, size)]
