@@ -47,10 +47,11 @@ net = Net([
     Layer(net_size, 1, Sigmoid)
 ])
 
-input_size = 1000
-epochs = 1000
-draw_epoch = 5
-learning_rate = 0.2
+input_size = 5000
+test_size = 2000
+#epochs = 1000
+draw_epoch = 1
+learning_rate = 0.05
 # ns: 16 fail       is: 1000 de: 5 lr: 0.1
 # ns: 8  e: 105     is: 1000 de: 5 lr: 1.0 unstable
 # ns: 8  e: 150     is: 1000 de: 5 lr: 0.5
@@ -71,7 +72,7 @@ learning_rate = 0.2
 # ns: 8  e: 112     is: 10000 de: 2 lr: 0.01
 
 teach = gen_labeled(input_size)
-test = gen_labeled((int)(input_size/1))
+test = gen_labeled(test_size)
 
 
 # view
@@ -99,6 +100,7 @@ while(True):
         print("Loss({}): {}".format(epoch, losses))
         #print(epoch)
         points = drawPoints(viewTest, test, points)
+        #net.backwards([0], 1, 10.0)
         
     epoch += 1
 

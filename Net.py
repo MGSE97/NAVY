@@ -56,7 +56,7 @@ class Layer:
         tmp = learning_rate * tmp
         #print("tmp ", tmp.reshape(tmp.shape[0], 1).shape)
         #print("inputs ", np.array(self.inputs).reshape(1,self.inputs_size).shape)
-        self.weights -= tmp.reshape(tmp.shape[0], 1) * np.array(self.inputs).reshape(1,self.inputs_size)
+        self.weights -= tmp.reshape(tmp.shape[0], 1) * np.array(self.inputs).reshape(1, self.inputs_size)
         self.biases -= tmp
         return error
 
