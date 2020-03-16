@@ -24,7 +24,14 @@ class HopfieldNet:
         else:
             self.weights += w
 
-    def recover(self, pattern):
-        #sync
+    def recover(self, pattern, sync=True):
         p = self.to_vec(pattern)
-        return self.from_vec(np.sign(self.weights @ p.transpose()).astype(int), pattern.shape)
+        if sync:
+            p = self.weights @ p.transpose()
+        else:
+            for i, col in enumerate(self.weights):
+                x = np.sign(p @ self.weights[:, i]).astype(int)
+                p[0][i] = x[0]
+
+        return self.from_vec(np.sign(p).astype(int), pattern.shape)
+
