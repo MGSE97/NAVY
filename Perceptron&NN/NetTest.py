@@ -1,11 +1,7 @@
-import copy
-
-import numpy as np
-from Net import Layer, Net, grad_error
+from Net import Layer, Net
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from Perceptron import perceptron_simple_error
 from Utils import rand_point_arr, prepareView, Sigmoid
 
 Axes3D = Axes3D  # pycharm auto import

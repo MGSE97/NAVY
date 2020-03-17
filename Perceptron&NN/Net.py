@@ -1,7 +1,5 @@
 import numpy as np
 
-from Perceptron import Perceptron
-
 
 class Net:
     def __init__(self, layers):

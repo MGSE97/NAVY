@@ -1,7 +1,7 @@
 import numpy as np
 
-from Hopfield import HopfieldNet
-from HopfieldPatterns import patterns5x5, destroy, prepare_data, convert_data, Pattern, Row
+from Hoppfield.Hopfield import HopfieldNet
+from Hoppfield.HopfieldPatterns import patterns5x5, destroy, prepare_data, convert_data, Pattern, Row
 
 net = HopfieldNet(5, 5)
 for p in patterns5x5:
