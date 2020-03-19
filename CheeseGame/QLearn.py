@@ -6,7 +6,7 @@ class Agent:
         self.World = world_size
         self.Actions = actions
         # Memory contains actions values for each tile of the world (X x Y x Actions)
-        self.Memory = np.zeros((self.World[0], self.World[1], len(self.Actions)))
+        self.Memory = np.zeros((*self.World, len(self.Actions)))
         self.Position = position
 
     def decide(self):
@@ -16,10 +16,10 @@ class Agent:
         :return: [Index of action, Action]
         """
         # get bests options
-        best = self.Memory[self.Position[0]][self.Position[1]][0]
+        best = self.Memory[(*self.Position, 0)]
         bests = [0]
         for i in range(1, len(self.Actions)):
-            val = self.Memory[self.Position[0]][self.Position[1]][i]
+            val = self.Memory[(*self.Position, i)]
             if val > best:
                 best = val
                 bests = [i]
@@ -39,7 +39,7 @@ class Agent:
         :param value: Evaluated value
         :param learning_rate: Learning rate
         """
-        self.Memory[self.Position[0]][self.Position[1]][action_index] = value + learning_rate*np.max(self.Memory[position[0]][position[1]])
+        self.Memory[(*self.Position, action_index)] = value + learning_rate*np.max(self.Memory[(*position,)])
         self.Position = position
 
     def blocked(self, action_index, value):
@@ -49,10 +49,15 @@ class Agent:
         :param action_index: Index of selected action
         :param value: Evaluated Value
         """
-        self.Memory[self.Position[0]][self.Position[1]][action_index] = value
+        self.Memory[(*self.Position, action_index)] = value
 
     def __str__(self):
         """
         Prints Agent Position and Memory matrix
         """
         print(self.Position, self.Memory)
+
+    def __copy__(self):
+        agent = Agent(self.Position, self.World, self.Actions)
+        agent.Memory = self.Memory.copy()
+        return agent

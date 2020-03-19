@@ -10,12 +10,30 @@ class HopfieldNet:
         self.empty = True
 
     def to_vec(self, pattern):
+        """
+        Flattens N*M to array
+
+        :param pattern: Pattern to convert
+        :return: Flattened Pattern
+        """
         return pattern.reshape(1, pattern.data.shape[0]*pattern.data.shape[1])
 
     def from_vec(self, data, size):
+        """
+        Converts flattened data to M*N matrix
+
+        :param data: Array
+        :param size: Size to convert
+        :return: M*N Matrix
+        """
         return data.reshape(size[0], size[1])
 
     def save(self, pattern):
+        """
+        Saves pattern to network
+
+        :param pattern: Pattern to save
+        """
         p = self.to_vec(pattern)
         w = (p * p.transpose()) - self.ones
         if self.empty:
@@ -25,6 +43,13 @@ class HopfieldNet:
             self.weights += w
 
     def recover(self, pattern, sync=True):
+        """
+        Recovers pattern using network
+
+        :param pattern: Destroyed pattern
+        :param sync: Method Synchronous/Asynchronous
+        :return: Recovered pattern
+        """
         p = self.to_vec(pattern)
         if sync:
             p = self.weights @ p.transpose()

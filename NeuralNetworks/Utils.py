@@ -24,6 +24,24 @@ class Sigmoid:
     def backwards(x):
         return x*(1-x)
 
+class ReLu:
+    @staticmethod
+    def forward(x):
+        return 0 if x < 0.0 else x
+
+    @staticmethod
+    def backwards(x):
+        return 0 if x < 0.0 else 1
+
+class Linear:
+    @staticmethod
+    def forward(x):
+        return x
+
+    @staticmethod
+    def backwards(x):
+        return 1
+
 def rand_point_arr(size, min_val=-100, max_val=100):
     return [Point().rand(min_val, max_val) for x in range(0, size)]
 

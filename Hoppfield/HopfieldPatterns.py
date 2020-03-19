@@ -29,14 +29,33 @@ class Pattern:
 
 
 def prepare_data(data):
+    """
+    Converts 0 to -1 in data
+
+    :param data: Data to convert
+    :return: Result
+    """
     return np.where(data==0, -1, data)
 
 
 def convert_data(data):
+    """
+    Converts -1 to 0 in data
+
+    :param data: Data to convert
+    :return: Result
+    """
     return np.where(data==-1, 0, data)
 
 
 def destroy(pattern, count):
+    """
+    Randomly destroys pattern
+
+    :param pattern: Pattern to destroy
+    :param count: Number of changes
+    :return: Destroyed pattern
+    """
     destroyed = Pattern(copy.deepcopy(pattern.data))
     for i in range(0, count):
         x = int(np.round(np.random.uniform(0, pattern.data.shape[0]-1)))
@@ -45,6 +64,7 @@ def destroy(pattern, count):
     return destroyed
 
 
+# Some patterns
 patterns5x5 = [
     Pattern([  # 0
         [0, 1, 1, 1, 0],
