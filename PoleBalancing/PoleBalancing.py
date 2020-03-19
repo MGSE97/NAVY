@@ -146,3 +146,4 @@ while True:
     i_episode += 1
 
 env.close()
+env2.close()
