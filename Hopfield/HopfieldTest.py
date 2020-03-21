@@ -1,7 +1,7 @@
 import numpy as np
 
-from Hoppfield.Hopfield import HopfieldNet
-from Hoppfield.HopfieldPatterns import patterns5x5, destroy, prepare_data, convert_data, Pattern, Row
+from Hopfield.Hopfield import HopfieldNet
+from Hopfield.HopfieldPatterns import patterns5x5, destroy, prepare_data, convert_data, Pattern, Row
 
 # Prepare network and save patterns
 net = HopfieldNet(5, 5)
@@ -54,6 +54,7 @@ while not halucination and j < 100:
           '\n' + str(Row([destroyed, fixed, pattern, Pattern(result)])))
     j += 1
 
+print("Halucination Sync: {}".format(i))
 print("Average success Sync:  {:.2%}".format(g_success/i))
 print("Average success Async: {:.2%}".format(g_success2/j))
-print("Halucinations Sync: {}, Async: {}".format(i, j))
+#print("Halucinations Sync: {}, Async: {}".format(i, j))
