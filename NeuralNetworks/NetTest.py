@@ -40,6 +40,7 @@ def test_func(data):
 net_size = 8
 net = Net([
     Layer(2, net_size, Sigmoid),
+    #Layer(net_size, net_size, Sigmoid),
     Layer(net_size, 1, Sigmoid)
 ])
 
@@ -47,7 +48,7 @@ input_size = 5000
 test_size = 2000
 #epochs = 1000
 draw_epoch = 1
-learning_rate = 0.05
+learning_rate = 0.2
 # ns: 16 fail       is: 1000 de: 5 lr: 0.1
 # ns: 8  e: 105     is: 1000 de: 5 lr: 1.0 unstable
 # ns: 8  e: 150     is: 1000 de: 5 lr: 0.5
