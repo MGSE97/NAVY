@@ -94,7 +94,7 @@ temp_agent = agent.__copy__()
 # Create Network
 net_size = 128
 net = QNet(env.observation_space.shape[0], env.action_space.n, net_size, device).to(device)
-optimizer = optim.Adam(net.parameters(), 1e-3)
+optimizer = optim.Adam(net.parameters(), lr=1e-3)
 net.train()
 
 ok = False
@@ -102,8 +102,8 @@ guts = 0
 i_episode = 0
 total = 0
 loss = 0
-guts_required = 1000
-guts_print_div = 100
+guts_required = 100
+guts_print_div = 10
 big_data = [[], []]
 print("Learning...")
 while not ok:
@@ -122,36 +122,45 @@ while not ok:
             # learn
             obs = torch.Tensor(observation)
             obs.unsqueeze(0)
-            observations.append([[obs, torch.FloatTensor([1.0, 0.0] if i == 0 else [0.0, 1.0])], round_observation(observation), i])
+            observations.append([
+                [
+                    obs,
+                    torch.FloatTensor([1.0, 0.0] if i == 1 else [0.0, 1.0])
+                ]
+                , round_observation(observation), i])
 
             observation = round_observation(observation)
             temp_agent.remember(observation, i, reward)
             if done and guts % (guts_required / guts_print_div) == 0:
-                print("\r{:3d} %: Episode {} loss {}, Avg. score: {}".format(int((guts % guts_required) / guts_required * 100), i_episode, loss, total / 10), end="")
+                print("\r{:3d} %: Episode {}, Avg. score: {},  loss: {}".format(int((guts % guts_required) / guts_required * 100), i_episode, total / 10, loss), end="")
+
 
         for observation in observations:
             big_data[0].append(observation[0][0])
             big_data[1].append(observation[0][1])
 
+
         if score >= 200:
             # Main Agent learning
             for observation in observations:
                 agent.remember(observation[1], observation[2], 1)
-                #big_data[0].append(observation[0][0])
-                #big_data[1].append(observation[0][1])
+                '''
+                big_data[0].append(observation[0][0])
+                big_data[1].append(observation[0][1])
+                '''
             guts += 1
         else:
             temp_agent = agent.__copy__()
 
         i_episode += 1
-        if guts == guts_required:
-            i_episode = 0
+        #if guts == guts_required:
+            #i_episode = 0
 
     # Net learnig
-    for o in range(0, 10):
-        loss = net.train_model(big_data, optimizer)
+    #for o in range(0, 10):
+    loss = net.train_model(big_data, optimizer)
     loss = abs(loss / len(big_data))
-    print("\r{:3d} %: Episode {} loss {}, Avg. score: {}".format(int(100), i_episode, loss, total / 10), end="")
+    print("\r{:3d} %: Episode {}, Avg. score: {},  loss: {}".format(int(100), i_episode, total / 10, loss), end="")
 
     # Test
     total = 0
@@ -172,7 +181,11 @@ while not ok:
         total += score
 
     ok = total >= 1500 # or i_episode >= 10
-    print("\r{:3d} %: Episode {} loss: {}, Avg. score: {}".format(100, i_episode, loss, total / 10), end="")
+    print("\r{:3d} %: Episode {}, Avg. score: {},  loss: {}".format(100, i_episode, total / 10, loss), end="")
+
+    if not ok:
+        guts = 0
+        big_data = [[],[]]
 
     i_episode += 1
 

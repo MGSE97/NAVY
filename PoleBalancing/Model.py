@@ -32,7 +32,7 @@ class QNet(nn.Module):
         results = self(observations)
         results = results.view(-1, self.num_outputs)
 
-        loss = F.mse_loss(results, actions, reduction="sum")
+        loss = F.mse_loss(actions, results, reduction="sum")
 
         optimizer.zero_grad()
         loss.backward()
