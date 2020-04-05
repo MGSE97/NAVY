@@ -1,12 +1,17 @@
 import turtle
 
+
 # https://stackoverflow.com/questions/29276229/how-to-implement-a-drag-feature-or-zoom-in-a-python-window-application
-class ScrolledTurtle(turtle.RawTurtle): # here we subclass the turtle to allow us to call statusbar updates after each movement
+class ScrolledTurtle(turtle.RawTurtle):
+    """
+    Turtle with logged boundaries, that can be used to resize screen.
+    """
     def __init__(self, canvas):
         turtle.RawTurtle.__init__(self, canvas)
-        self.bbox = [0,0,0,0]
+        self.bbox = [0, 0, 0, 0]
 
-    def _update_bbox(self): # keep a record of the furthers points visited
+    def _update_bbox(self):
+        # keep a record of the furthers points visited
         pos = self.position()
         if pos[0] < self.bbox[0]:
             self.bbox[0] = pos[0]
@@ -52,3 +57,15 @@ class ScrolledTurtle(turtle.RawTurtle): # here we subclass the turtle to allow u
     def home(self, *args):
         turtle.RawTurtle.home(self, *args)
         self._update_bbox()
+
+    def get_screen_size(self):
+        min_x, min_y, max_x, max_y = self.bbox  # get the furthest points the turtle has been
+        width = max((0 - min_x), (max_x)) * 2 + 100  # work out what the maximum distance from 0,0 is for each axis
+        height = max((0 - min_y), (max_y)) * 2 + 100  # the 100 here gives us some padding between the edge and whats drawn
+        return [width, height]
+
+    def update_screen_size(self):
+        min_x, min_y, max_x, max_y = self.bbox  # get the furthest points the turtle has been
+        width = max((0 - min_x), (max_x)) * 2 + 100  # work out what the maximum distance from 0,0 is for each axis
+        height = max((0 - min_y), (max_y)) * 2 + 100  # the 100 here gives us some padding between the edge and whats drawn
+        self.screen.screensize(width, height)
