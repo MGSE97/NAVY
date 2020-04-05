@@ -79,7 +79,7 @@ w, h = [0, 0]
 # Draw all patterns with depths
 for depth in range(1, max_depth+1):
     for i, (axiom, rule, color, angle, heading, position, scale) in enumerate(patterns):
-        print("Depth: {}, Color: {}, Pattern: {}, Axiom: {}".format(depth, color, pattern, axiom))
+        print("Depth: {}, Color: {}, Pattern: {}, Axiom: {}".format(depth, color, rule, axiom))
 
         # Get or Create turtle for pattern
         if len(skks) <= i:
