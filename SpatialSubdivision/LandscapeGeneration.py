@@ -190,7 +190,7 @@ g, f = create_graph("Surface")
 seed = 45           # surface seed
 size = (2, 2)       # initial size
 scale_to = 64       # scaling size
-roughness = 2.5     # terrain roughtness <rough = 1, smooth = 4>
+roughness = 2.5     # terrain roughness <rough = 1, smooth = 4>
 sea_lvl = 0.2       # sea level clamp
 
 # Initial surface
